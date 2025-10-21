@@ -1,3 +1,13 @@
-requests>=2.31.0
-urllib3>=2.1.0
-playwright>=1.40.0
+# requirements.txt
+
+# --- Core de Scraping e Análise ---
+requests
+tldextract
+beautifulsoup4
+lxml
+faker
+
+# --- Módulos de Comunicação C2 ---
+paho-mqtt
+websocket-client
+PySocks
